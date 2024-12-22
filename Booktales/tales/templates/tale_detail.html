@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ tale.title }} - Book Review
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">{{ tale.title }}</h1>
+    <h5 class="text-muted text-center">By {{ tale.user.username }}</h5>
+    <img src="{{ tale.photo.url }}" class="img-fluid mx-auto d-block my-4" style="max-width: 250px;"alt="Book Image">
+    <p class="text-justify">{{ tale.text }}</p>
+    <a href="{% url 'tales_list' %}" class="btn btn-secondary">Back to Reviews</a>
+</div>
+{% endblock %}

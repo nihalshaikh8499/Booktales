@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Booktales
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center text-white mt-4">Are you sure you want to delete this tale?</h1>
+<form method ="post">
+    {% csrf_token %}
+    <button class='btn btn-danger'>Delete</button>
+    <a class="btn btn-success"href="{%url 'tales_list'%}">Cancel</a>
+
+
+</form>
+{% endblock %}

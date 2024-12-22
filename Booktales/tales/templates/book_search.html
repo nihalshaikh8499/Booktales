@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block title %}
+Book Search - Booktales
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Search for book you read</h2>
+
+    <form method="get" action="{% url 'book_search' %}">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search for a book..." class="form-control ">
+        <button type="submit" class="btn btn-primary mt-3 mb-3">Search</button>
+    </form>
+
+    {% if books %}
+    <div class="container row gap-3">
+        {% for book in books %}
+        <div class="card" style="width: 18rem;">
+                {% if book.cover_i %}
+                <img src="https://covers.openlibrary.org/b/id/{{ book.cover_i }}-L.jpg" class="card-img-top mt-3" alt="{{ book.title }}" style="object-fit: cover; height: 400px;">
+                {% else %}
+                <img src="https://via.placeholder.com/150" class="card-img-top" alt="No cover image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">{{ book.author_name|join:", " }}</p>
+    
+                    <a href="{% url 'tales_create' %}?book_id={{ book.key }}" class="btn btn-primary">Create tale</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    {% comment %} <p>No books found for your search. Please try again.</p> {% endcomment %}
+    {% endif %}
+</div>
+{% endblock %}

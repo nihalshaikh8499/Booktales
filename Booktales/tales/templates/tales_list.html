@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Booktales
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated%}
+    <a class="btn btn-primary ms-4 mt-4" href="{% url 'book_search' %}">Share a tale</a>
+    {% endif %}
+    {% if query %}
+    <h2 class="mt-4">Search Results for "{{ query }}"</h2>
+    {% endif %}
+    <div class="container row gap-3 ms-3 mt-4">
+        {% for tale in tales %}
+        <div class="card" style="width: 18rem;">
+            <a href="{% url 'tale_detail' tale.id %}">
+                {% if tale.photo %}
+                <img src="{{ tale.photo.url }}" class="card-img-top mt-3" alt="Cover Image" style="object-fit: cover; height: 400px;">
+                {% else %}
+                <img src="https://via.placeholder.com/150" class="card-img-top mt-3" alt="No Image" style="object-fit: cover; height: 400px;">
+                {% endif %}
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{ tale.user.username }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ tale.title }}</h6>
+                {% if  tale.user == user%}
+                <a href="{% url 'tales_edit' tale.id %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'tales_delete' tale.id %}" class="btn btn-danger">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
