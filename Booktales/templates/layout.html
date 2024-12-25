@@ -14,10 +14,10 @@
       }
       body {
         background-image:  linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),  url('{% static "images/background.jpg" %}');
-        background-size: cover; /* Makes the image cover the entire page */
-        background-repeat: no-repeat; /* Prevents image repetition */
-        background-position: center; /* Centers the image */
-        opacity: 1; /* Sets overall opacity */
+        background-size: cover; 
+        background-repeat: no-repeat;
+        background-position: center; 
+        opacity: 1; 
       }
     </style>
     <title>
@@ -29,7 +29,7 @@
 <body class= "bg-dark">
     <nav class="navbar navbar-expand-lg bg-body-tertiary custom-shadow">
         <div class="container-fluid">
-          {% comment %} <a class="navbar-brand" href="{% url 'tales_list' %}">Booktales</a> {% endcomment %}
+          
           <a class="navbar-brand d-flex align-items-center" href="{% url 'tales_list' %}">
             <img src="{% static 'images/rb_66538.png' %}" alt="Booktales Logo" width="30" height="30" class="me-2">
             <span>Booktales</span>
@@ -53,8 +53,6 @@
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#">About Us</a></li>
                   <li><a class="dropdown-item" href="#">Contact Info</a></li>
-                  {% comment %} <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li> {% endcomment %}
                 </ul>
               </li>
               <li class="nav-item">

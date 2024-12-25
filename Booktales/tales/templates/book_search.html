@@ -21,7 +21,7 @@ Book Search - Booktales
     </form>
 
     {% if books %}
-    <div class="container row gap-3">
+    <div class="container row gap-3 mb-4">
         {% for book in books %}
         <div class="card" style="width: 18rem;">
                 {% if book.cover_i %}
@@ -38,8 +38,6 @@ Book Search - Booktales
         </div>
         {% endfor %}
     </div>
-    {% else %}
-    {% comment %} <p>No books found for your search. Please try again.</p> {% endcomment %}
     {% endif %}
 </div>
 {% endblock %}
