@@ -11,5 +11,9 @@
     <img src="{{ tale.photo.url }}" class="img-fluid mx-auto d-block my-4" style="max-width: 250px;"alt="Book Image">
     <p class="text-justify">{{ tale.text }}</p>
     <a href="{% url 'tales_list' %}" class="btn btn-secondary">Back to Reviews</a>
+    {% if  tale.user == user%}
+        <a href="{% url 'tales_edit' tale.id %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'tales_delete' tale.id %}" class="btn btn-danger">Delete</a>
+    {% endif %}
 </div>
 {% endblock %}

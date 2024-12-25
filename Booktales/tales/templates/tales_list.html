@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
-
+{% load static %}
 {% block title %}
 Booktales
 {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated%}
-    <a class="btn btn-primary ms-4 mt-4 custom-shadow-button " href="{% url 'book_search' %}">Share a tale</a>
+    <a class="btn btn-primary ms-4 mt-5 custom-shadow-button " href="{% url 'book_search' %}">Share a tale</a>
     {% endif %}
     {% if query %}
     <h2 class="mt-4 ms-4 ">Search Results for "{{ query }}"</h2>
@@ -22,12 +22,12 @@ Booktales
                 {% endif %}
             </a>
             <div class="card-body">
-                <h5 class="card-title">{{ tale.user.username }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ tale.title }}</h6>
                 {% if  tale.user == user%}
-                <a href="{% url 'tales_edit' tale.id %}" class="btn btn-primary">Edit</a>
-                <a href="{% url 'tales_delete' tale.id %}" class="btn btn-danger">Delete</a>
+                <h5 class="card-title"><img src="{% static 'images/dot.svg' %}" alt="Blue dot" width="8" height="8" class="me-2">{{ tale.user.username }}</h5>
+                {%else%}
+                <h5 class="card-title ">{{ tale.user.username }}</h5>
                 {% endif %}
+                <h6 class="card-subtitle mb-2 text-muted">{{ tale.title }}</h6>
             </div>
         </div>
         {% endfor %}
