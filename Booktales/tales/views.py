@@ -11,6 +11,8 @@ import os
 def index(request):
     return render(request, 'index.html')
 
+
+
 def tales_list(request):
     query = request.GET.get('q', '')  # Get the search query from the URL
     tales = Tales.objects.all().order_by('-created_at')  # Default queryset

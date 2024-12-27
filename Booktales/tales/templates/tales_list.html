@@ -23,7 +23,7 @@ Booktales
             </a>
             <div class="card-body">
                 {% if  tale.user == user%}
-                <h5 class="card-title"><img src="{% static 'images/dot.svg' %}" alt="Blue dot" width="8" height="8" class="me-2">{{ tale.user.username }}</h5>
+                <h5 class="card-title"><img src="{% static 'images/dot.svg' %}" alt="Blue dot" width="8" height="8" class="me-2 mb-1">{{ tale.user.username }}</h5>
                 {%else%}
                 <h5 class="card-title ">{{ tale.user.username }}</h5>
                 {% endif %}
