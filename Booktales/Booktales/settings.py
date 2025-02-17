@@ -130,6 +130,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 3600
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/tales_list/'
 LOGOUT_REDIRECT_URL = '/'
