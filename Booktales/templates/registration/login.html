@@ -64,7 +64,7 @@
             <form method="post">
                 {% csrf_token %}
                 
-                <!-- Username Field -->
+                
                 <div class="mb-3">
                     <label for="{{ form.username.id_for_label }}" class="label-style">Username</label>
                     {{ form.username }}
@@ -73,7 +73,7 @@
                     {% endif %}
                 </div>
 
-                <!-- Password Field -->
+               
                 <div class="mb-3">
                     <label for="{{ form.password.id_for_label }}" class="label-style">Password</label>
                     {{ form.password }}

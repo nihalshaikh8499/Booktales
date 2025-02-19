@@ -63,7 +63,7 @@
             <form method="post">
                 {% csrf_token %}
                 
-                <!-- Username Field -->
+               
                 <div class="mb-3">
                     <label for="{{ form.username.id_for_label }}" class="label-style">Username</label>
                     {{ form.username }}
@@ -72,7 +72,7 @@
                     {% endif %}
                 </div>
 
-                <!-- Email Field -->
+                
                 <div class="mb-3">
                     <label for="{{ form.email.id_for_label }}" class="label-style ">Email</label>
                     {{ form.email }}
@@ -81,7 +81,7 @@
                     {% endif %}
                 </div>
 
-                <!-- Password Field -->
+               
                 <div class="mb-3">
                     <label for="{{ form.password1.id_for_label }}" class="label-style">Password</label>
                     {{ form.password1 }}
@@ -90,7 +90,7 @@
                     {% endif %}
                 </div>
 
-                <!-- Confirm Password Field -->
+                
                 <div class="mb-3">
                     <label for="{{ form.password2.id_for_label }}" class="label-style">Confirm Password</label>
                     {{ form.password2 }}

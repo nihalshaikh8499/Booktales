@@ -14,13 +14,19 @@ def index(request):
 
 
 def tales_list(request):
-    query = request.GET.get('q', '')  # Get the search query from the URL
-    tales = Tales.objects.all().order_by('-created_at')  # Default queryset
+    query = request.GET.get('q', '')  
+    tales = Tales.objects.all().order_by('-created_at') 
 
     if query:
-        tales = tales.filter(title__icontains=query)  # Filter tales by title containing the query
+        tales = tales.filter(title__icontains=query) 
 
     return render(request, 'tales_list.html', {'tales': tales, 'query': query})
+
+@login_required
+def tales_user_list(request):
+    tales = Tales.objects.filter(user=request.user).order_by('-created_at')  
+
+    return render(request, 'tales_user_list.html', {'tales': tales})
 
 @login_required
 def tales_create(request):
@@ -103,6 +109,7 @@ def  tales_delete(request, tale_id):
 
 def tale_detail(request, tale_id):
     tale = get_object_or_404(Tales, id=tale_id)
+    
     return render(request, 'tale_detail.html', {'tale': tale})
 
 def book_search(request):

@@ -68,11 +68,14 @@
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#">About Us</a></li>
                   <li><a class="dropdown-item" href="#">Contact Info</a></li>
+                  
                 </ul>
               </li>
+              {% if user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">   </a>
+                <a class="nav-link" aria-disabled="true" href="{% url "tales_user_list" %}"> User Profile </a>
               </li>
+              {% endif %}
             </ul>
             <form class="d-flex" role="search" method="get" action="{% url 'tales_list' %}">
               <input class="form-control me-2 custom-shadow-button" type="search" name="q" placeholder="Search for tales" aria-label="Search" value="{{ query|default:'' }}">

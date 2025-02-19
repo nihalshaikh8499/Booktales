@@ -27,4 +27,5 @@ urlpatterns = [
     path('<int:tale_id>/', views.tale_detail, name='tale_detail'),
     path('books/search/', views.book_search, name='book_search'),
     path('tales/create/<str:book_id>/', views.tale_create_from_book, name='tale_create_from_book'),
+    path('tales_user_list/',views.tales_user_list, name = 'tales_user_list')
 ] 
