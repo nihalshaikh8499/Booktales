@@ -1,11 +1,62 @@
 {% extends "layout.html" %}
-
+{% load static %}
 {% block title %}
 {{ tale.title }} - Book Review
 {% endblock %}
 
-{% block content %}
-<div class="container mt-4">
+{% block content %}<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top custom-shadow ">
+    <div class="container-fluid">
+      
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'tales_list' %}">
+        <img src="{% static 'images/rb_66538.png' %}" alt="Booktales Logo" width="30" height="30" class="me-2">
+        <span>Booktales</span>
+      </a>
+  
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'tales_list' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">   </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              More
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">About Us</a></li>
+              <li><a class="dropdown-item" href="#">Contact Info</a></li>
+              
+            </ul>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" aria-disabled="true" href="{% url "tales_user_list" %}"> User Profile </a>
+          </li>
+          {% endif %}
+        </ul>
+        <form class="d-flex" role="search" method="get" action="{% url 'tales_list' %}">
+          <input class="form-control me-2 custom-shadow-button" type="search" name="q" placeholder="Search for tales" aria-label="Search" value="{{ query|default:'' }}">
+          <button class="btn btn-outline-success custom-shadow-button" type="submit">Search</button>
+        </form>
+          {% if user.is_authenticated %}
+          <form action= {% url 'logout' %} method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger mx-2 custom-shadow-button" type = 'submit'>Logout</button>
+          </form>
+          {% else %}
+          <a href="{%url 'login'%}" class="btn btn-primary ms-2 custom-shadow-button" >Login</a>
+          <a href="{%url 'register'%}" class="btn btn-secondary mx-2 custom-shadow-button" >Register</a>
+          {% endif %}
+      </div>
+    </div>
+      
+  </nav>
+<div class="container mt-5">
     <h1 class="text-center">{{ tale.title }}</h1>
     <h5 class="text-muted text-center">By {{ tale.user.username }}</h5>
     <img src="{{ tale.photo.url }}" class="img-fluid mx-auto d-block my-4" style="max-width: 250px;"alt="Book Image">

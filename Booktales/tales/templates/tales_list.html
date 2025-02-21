@@ -1,35 +1,132 @@
 {% extends "layout.html" %}
 {% load static %}
+{% load mathfilters %}
+
 {% block title %}
 Booktales
 {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated%}
-    <a class="btn btn-primary ms-4 mt-5 custom-shadow-button " href="{% url 'book_search' %}">Share a tale</a>
+<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top custom-shadow ">
+    <div class="container-fluid">
+      
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'tales_list' %}">
+        <img src="{% static 'images/rb_66538.png' %}" alt="Booktales Logo" width="30" height="30" class="me-2">
+        <span>Booktales</span>
+      </a>
+  
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'tales_list' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">   </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              More
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">About Us</a></li>
+              <li><a class="dropdown-item" href="#">Contact Info</a></li>
+              
+            </ul>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" aria-disabled="true" href="{% url "tales_user_list" %}"> User Profile </a>
+          </li>
+          {% endif %}
+        </ul>
+        <form class="d-flex" role="search" method="get" action="{% url 'tales_list' %}">
+          <input class="form-control me-2 custom-shadow-button" type="search" name="q" placeholder="Search for tales" aria-label="Search" value="{{ query|default:'' }}">
+          <button class="btn btn-outline-success custom-shadow-button" type="submit">Search</button>
+        </form>
+          {% if user.is_authenticated %}
+          <form action= {% url 'logout' %} method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger mx-2 custom-shadow-button" type = 'submit'>Logout</button>
+          </form>
+          {% else %}
+          <a href="{%url 'login'%}" class="btn btn-primary ms-2 custom-shadow-button" >Login</a>
+          <a href="{%url 'register'%}" class="btn btn-secondary mx-2 custom-shadow-button" >Register</a>
+          {% endif %}
+      </div>
+    </div>
+      
+  </nav>
+    {% if user.is_authenticated %}
+    <a class="btn btn-primary ms-4 mt-5 custom-shadow-button" href="{% url 'book_search' %}">Share a tale</a>
     {% endif %}
+    
     {% if query %}
-    <h2 class="mt-4 ms-4 ">Search Results for "{{ query }}"</h2>
+    <h2 class="mt-4 ms-4">Search Results for "{{ query }}"</h2>
     {% endif %}
+    
     <div class="container row gap-3 ms-3 mt-4 mb-4">
         {% for tale in tales %}
         <div class="card custom-shadow mb-2" style="width: 18rem;">
             <a href="{% url 'tale_detail' tale.id %}">
                 {% if tale.photo %}
-                <img src="{{ tale.photo.url }}" class="card-img-top mt-3" alt="Cover Image" style="object-fit: cover; height: 400px;">
+                <img src="{{ tale.photo.url }}" class="card-img-top mt-3" alt="Cover Image" style="object-fit: cover; height: 420px;">
                 {% else %}
                 <img src="https://cdn-icons-png.freepik.com/512/6941/6941695.png?ga=GA1.1.100694631.1735112083" class="card-img-top mt-3" alt="No Image" style="object-fit: cover; height: 400px;">
                 {% endif %}
             </a>
-            <div class="card-body">
-                {% if  tale.user == user%}
-                <h5 class="card-title"><img src="{% static 'images/dot.svg' %}" alt="Blue dot" width="8" height="8" class="me-2 mb-1">{{ tale.user.username }}</h5>
-                {%else%}
-                <h5 class="card-title ">{{ tale.user.username }}</h5>
-                {% endif %}
-                <h6 class="card-subtitle mb-2 text-muted">{{ tale.title }}</h6>
+
+            <div class="card-body pb-0 pt-2">
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        {% if tale.user == user %}
+                        <img src="{% static 'images/dot.svg' %}" alt="Blue dot" width="8" height="8" class="me-2 mb-2">
+                        {% endif %}
+                        <h5 class="card-title mb-2">{{ tale.user.username }}</h5>
+                    </div>
+                    {% if  tale.user != user  %}
+                    {% if user.is_authenticated %}
+                    <a id="{{ tale.id }}" class="btn-bookmark mb-1 ms-2">
+                        {% if request.user in tale.bookmarked_by.all %}
+                        <img src="{% static 'images/bookmark_icon.png' %}" alt="bookmark" width="30" height="30">
+                        {% else %}
+                        <img src="{% static 'images/bookmark_icon.png' %}" alt="bookmark" width="30" height="30">
+                    {% endif %}
+                    </a>
+                    {% endif %} 
+                    {% else %}
+ 
+                    {% endif %}
+                </div>
+
+                <h6 class="card-subtitle mb-3 text-muted">{{ tale.title }}</h6>
             </div>
         </div>
         {% endfor %}
     </div>
+
+    <script type="text/javascript">
+        window.CSRF_TOKEN = "{{ csrf_token }}";
+    
+        $(document).on('click', '.btn-bookmark', function() {
+            var tale_id = $(this).attr("id");
+            var bookmarkBtn = $(this);
+
+            $.ajax({
+                method: 'POST',
+                url: '{% url "bookmark" %}',  
+                data: { tale_id: tale_id, csrfmiddlewaretoken: window.CSRF_TOKEN },
+                success: function(response) {
+                    if (response.bookmarked) {
+                        bookmarkBtn.html('<img src="{% static "images/bookmark_icon.png" %}" alt="bookmark" width="30" height="30">');
+                    } else {
+                        bookmarkBtn.html('<img src="{% static "images/" %}" alt="bookmark" width="30" height="30">');
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}

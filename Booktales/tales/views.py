@@ -8,10 +8,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 import os 
 
+from django.http import JsonResponse
+
 def index(request):
     return render(request, 'index.html')
-
-
 
 def tales_list(request):
     query = request.GET.get('q', '')  
@@ -21,6 +21,11 @@ def tales_list(request):
         tales = tales.filter(title__icontains=query) 
 
     return render(request, 'tales_list.html', {'tales': tales, 'query': query})
+
+def bookmarked_list(request): 
+    tales = Tales.objects.all().filter(bookmarked_by = request.user).order_by('-created_at')
+
+    return render(request, 'bookmarked_list.html', {'tales': tales})
 
 @login_required
 def tales_user_list(request):
@@ -182,3 +187,24 @@ def register(request):
 
     return render(request, 'registration/register.html',{'form':form})
 
+@login_required
+def bookmark_tale(request):
+    tale_id = request.POST.get('tale_id')
+    tale = get_object_or_404(Tales, id=tale_id)
+
+    if tale.bookmarked_by.filter(id=request.user.id).exists():
+        tale.bookmarked_by.remove(request.user)
+        bookmarked = False
+    else:
+        tale.bookmarked_by.add(request.user)
+        bookmarked = True
+
+    # Get the first user who liked this tale
+    first_bookmarker = tale.bookmarked_by.first()
+    
+    return JsonResponse({
+        "bookmarked": bookmarked,
+        # "like_count": tale.liked_by.count(),
+        # "first_user": first_liker.username if first_liker else "",
+        # "first_user_is_me": first_liker == request.user
+    })

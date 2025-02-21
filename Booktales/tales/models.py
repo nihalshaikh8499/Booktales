@@ -10,6 +10,7 @@ class Tales(models.Model):
     photo = models.ImageField(upload_to='tales/', blank=True, null=True) 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    bookmarked_by = models.ManyToManyField(User, related_name="bookmarked", blank=True) 
 
     def __str__(self):
         return f'{self.user.username} - {self.title}'
